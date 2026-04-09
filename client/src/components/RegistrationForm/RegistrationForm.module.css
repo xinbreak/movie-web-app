@@ -1,6 +1,6 @@
 .formCard {
   width: 100%;
-  max-width: 380px;
+  max-width: 760px;
   padding: 40px 40px 60px 40px;
   background-color: rgba(20, 20, 20, 0.8);
   border-radius: 16px;
@@ -23,36 +23,15 @@
 
 .inputGroup {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 25px;
 }
 
-.signInBtn {
-  width: fit-content;
-  min-width: 140px;
-  padding: 12px 30px;
-
-  margin: 40px auto 0 auto;
-
-  border-radius: 8px;
-  border: none;
-  background-color: #ffffff;
-  color: #000000;
-  font-family: var(--main-font);
-  font-weight: 700;
-  font-size: 15px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: block;
-}
-
-.signInBtn:hover {
-  background-color: #e0e0e0;
-  transform: translateY(-1px);
-}
-
-.signInBtn:active {
-  transform: translateY(0);
+.inputGroup > div {
+  flex: 1 1 calc(50% - 13px);
+  min-width: 250px;
 }
 
 .footer {
@@ -65,7 +44,7 @@
   font-size: 14px;
 }
 
-.signUpBtn {
+.signInBtn {
   background: none;
   border: none;
   color: #ffffff;
