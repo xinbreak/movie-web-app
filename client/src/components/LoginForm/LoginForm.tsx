@@ -19,7 +19,7 @@ export default function LoginForm() {
 
   return (
     <div className={styles.formCard}>
-      <h2 className={styles.title}>LOGIN</h2>
+      <h1 className={styles.title}>LOGIN</h1>
 
       <form onSubmit={handleLogin} className={styles.inputGroup}>
         <InputForm
