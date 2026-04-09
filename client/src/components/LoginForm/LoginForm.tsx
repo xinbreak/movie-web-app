@@ -1,5 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import ButtonForm from '../ButtonForm/ButtonForm'
+import InputForm from '../InputForm/InputForm'
 import styles from './LoginForm.module.css'
 
 export default function LoginForm() {
@@ -9,7 +11,10 @@ export default function LoginForm() {
   const [password, setPassword] = useState('')
 
   const handleLogin = () => {
-    navigate('/home')
+    //доработать
+    if (email == 'admin@mail.ru' && password == '1234') {
+      navigate('/home')
+    }
   }
 
   return (
@@ -17,31 +22,23 @@ export default function LoginForm() {
       <h2 className={styles.title}>LOGIN</h2>
 
       <form onSubmit={handleLogin} className={styles.inputGroup}>
-        <div className={styles.field}>
-          <label className={styles.label}>EMAIL</label>
-          <input
-            type="email"
-            placeholder="email@email.com"
-            className={styles.input}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+        <InputForm
+          label="EMAIL"
+          placeholder="email@email.com"
+          type="email"
+          value={email}
+          onChange={setEmail}
+        />
 
-        <div className={styles.field}>
-          <label className={styles.label}>PASSWORD</label>
-          <input
-            type="password"
-            placeholder="•••••••••••"
-            className={styles.input}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+        <InputForm
+          label="PASSWORD"
+          placeholder="password"
+          type="password"
+          value={password}
+          onChange={setPassword}
+        />
 
-        <button type="submit" className={styles.loginBtn}>
-          SIGN IN
-        </button>
+        <ButtonForm buttonName="SIGN IN" />
       </form>
 
       <div className={styles.footer}>
