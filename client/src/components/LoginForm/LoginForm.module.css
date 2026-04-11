@@ -27,34 +27,6 @@
   gap: 25px;
 }
 
-.signInBtn {
-  width: fit-content;
-  min-width: 140px;
-  padding: 12px 30px;
-
-  margin: 40px auto 0 auto;
-
-  border-radius: 8px;
-  border: none;
-  background-color: #ffffff;
-  color: #000000;
-  font-family: var(--main-font);
-  font-weight: 700;
-  font-size: 15px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: block;
-}
-
-.signInBtn:hover {
-  background-color: #e0e0e0;
-  transform: translateY(-1px);
-}
-
-.signInBtn:active {
-  transform: translateY(0);
-}
-
 .footer {
   margin-top: 30px;
   display: flex;

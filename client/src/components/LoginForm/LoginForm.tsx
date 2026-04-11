@@ -1,44 +1,37 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import ButtonForm from '../ButtonForm/ButtonForm'
 import InputForm from '../InputForm/InputForm'
+import { useAuth } from '../../hooks/useAuth'
 import styles from './LoginForm.module.css'
 
 export default function LoginForm() {
-  const navigate = useNavigate()
-
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  const handleLogin = () => {
-    //доработать
-    if (email == 'admin@mail.ru' && password == '1234') {
-      navigate('/home')
-    }
-  }
+  const { state, formAction, isPending } = useAuth()
 
   return (
     <div className={styles.formCard}>
       <h1 className={styles.title}>LOGIN</h1>
 
-      <form onSubmit={handleLogin} className={styles.inputGroup}>
+      <form action={formAction} className={styles.inputGroup} noValidate>
         <InputForm
           label="EMAIL"
+          name="email"
           placeholder="email@email.com"
           type="email"
-          value={email}
-          onChange={setEmail}
+          isError={!!state.error}
         />
 
         <InputForm
           label="PASSWORD"
+          name="password"
           placeholder="password"
           type="password"
-          value={password}
-          onChange={setPassword}
+          isError={!!state.error}
         />
 
-        <ButtonForm buttonName="SIGN IN" />
+        <ButtonForm
+          buttonName={isPending ? 'CHECKING...' : 'SIGN IN'}
+          disabled={isPending}
+        />
       </form>
 
       <div className={styles.footer}>
