@@ -2,28 +2,30 @@ import styles from './InputForm.module.css'
 
 interface InputFormProps {
   label: string
+  name: string
   type?: string
   placeholder?: string
-  value: string
-  onChange: (value: string) => void
+  isError?: boolean
 }
 
 export default function InputForm({
   label,
+  name,
   type = 'text',
   placeholder,
-  value,
-  onChange
+  isError
 }: InputFormProps) {
   return (
     <div className={styles.field}>
-      <label className={styles.label}>{label}</label>
+      <label className={styles.label} htmlFor={name}>
+        {label}
+      </label>
       <input
+        id={name}
+        name={name}
         type={type}
-        placeholder={placeholder}
-        className={styles.input}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
+        placeholder={isError ? `Invalid ` + type : placeholder}
+        className={`${styles.input} ${isError ? styles.inputError : ''}`}
       />
     </div>
   )
