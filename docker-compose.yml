@@ -4,7 +4,8 @@ services:
       context: ./client
       dockerfile: Dockerfile.dev
     volumes:
-      - .:/app 
+      - ./client:/app 
+      - /app/node_modules
     ports:
       - "5173:5173"
     tty: true
@@ -23,4 +24,4 @@ services:
     tty: true
     stdin_open: true
     working_dir: /app/server
-    command: sh -c "go mod tidy && go run cmd/server/main.go"
+    command: sh -c "go run cmd/server/main.go"
