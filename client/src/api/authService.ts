@@ -7,3 +7,13 @@ export const loginRequest = async (email: string, password: string) => {
 
   throw new Error()
 }
+
+export const registerRequest = async (userData: Record<string, any>) => {
+  await new Promise((resolve) => setTimeout(resolve, 800))
+
+  if (userData) {
+    return { success: true, data: userData }
+  }
+
+  throw new Error()
+}

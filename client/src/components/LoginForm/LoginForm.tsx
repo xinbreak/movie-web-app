@@ -17,7 +17,7 @@ export default function LoginForm() {
           name="email"
           placeholder="email@email.com"
           type="email"
-          isError={!!state.error}
+          isError={!!state.success}
         />
 
         <InputForm
@@ -25,7 +25,7 @@ export default function LoginForm() {
           name="password"
           placeholder="password"
           type="password"
-          isError={!!state.error}
+          isError={!!state.success}
         />
 
         <ButtonForm
