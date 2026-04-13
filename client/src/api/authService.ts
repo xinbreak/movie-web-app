@@ -1,19 +1,39 @@
 export const loginRequest = async (email: string, password: string) => {
-  await new Promise((resolve) => setTimeout(resolve, 800))
+  const response = await fetch('http://localhost:8080/api/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email, password })
+  })
 
-  if (email === 'admin@mail.ru' && password === '1234') {
-    return { success: true, token: 'fake-jwt-token' }
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    throw new Error(errorData.message || 'Login failed')
   }
 
-  throw new Error()
+  return await response.json()
 }
 
 export const registerRequest = async (userData: Record<string, any>) => {
-  await new Promise((resolve) => setTimeout(resolve, 800))
-
-  if (userData) {
-    return { success: true, data: userData }
+  const user = {
+    email: userData.email,
+    password: userData.password,
+    username: userData.firstName + ' ' + userData.lastName
   }
 
-  throw new Error()
+  const response = await fetch('http://localhost:8080/api/auth/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(user)
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    throw new Error(errorData.message || 'Registration failed')
+  }
+
+  return await response.json()
 }
