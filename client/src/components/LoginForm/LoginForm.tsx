@@ -5,29 +5,26 @@ import { useAuth } from '../../hooks/useAuth'
 import styles from './LoginForm.module.css'
 
 export default function LoginForm() {
-  const { state, formAction, isPending } = useAuth()
+  const { isError, formAction, isPending } = useAuth()
 
   return (
     <div className={styles.formCard}>
       <h1 className={styles.title}>LOGIN</h1>
-
       <form action={formAction} className={styles.inputGroup} noValidate>
         <InputForm
           label="EMAIL"
           name="email"
           placeholder="email@email.com"
           type="email"
-          isError={!!state.success}
+          isError={isError}
         />
-
         <InputForm
           label="PASSWORD"
           name="password"
           placeholder="password"
           type="password"
-          isError={!!state.success}
+          isError={isError}
         />
-
         <ButtonForm
           buttonName={isPending ? 'CHECKING...' : 'SIGN IN'}
           disabled={isPending}

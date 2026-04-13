@@ -1,40 +1,40 @@
 import { useActionState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { validateEmail, validatePassword } from '../utils/validation'
 import { registerRequest } from '../api/authService'
-import { useNavigate } from 'react-router-dom'
+
+interface FormState {
+  isError: boolean
+}
 
 export const useReg = () => {
   const navigate = useNavigate()
 
-  const registerAction = async (_prevState: any, formData: FormData) => {
+  const registerAction = async (
+    _prevState: FormState,
+    formData: FormData
+  ): Promise<FormState> => {
     const data = Object.fromEntries(formData.entries())
 
-    const email = validateEmail(data.email as string)
-    const password = validatePassword(data.password as string)
+    const emailValid = validateEmail(data.email as string)
+    const passValid = validatePassword(data.password as string)
 
-    if (!email || !password || !data.firstName || !data.lastName) {
-      return { succes: true }
+    if (!emailValid || !passValid || !data.firstName || !data.lastName) {
+      return { isError: true }
     }
 
     try {
-      const response = await registerRequest(data)
-      console.log('Data: ', response.data, 'Succes: ', response.success)
+      await registerRequest(data)
       navigate('/login')
-      return { success: true }
-    } catch (error: any) {
-      return {
-        success: false
-      }
+      return { isError: false }
+    } catch {
+      return { isError: true }
     }
   }
 
   const [state, formAction, isPending] = useActionState(registerAction, {
-    succes: false
+    isError: false
   })
 
-  return {
-    succes: state.succes,
-    formAction,
-    isLoading: isPending
-  }
+  return { isError: state.isError, formAction, isLoading: isPending }
 }
