@@ -5,43 +5,38 @@ import { Link } from 'react-router-dom'
 import { useReg } from '../../hooks/useReg'
 
 export default function RegistrationForm() {
-  const { succes, formAction, isLoading } = useReg()
+  const { isError, formAction, isLoading } = useReg()
 
   return (
     <div className={styles.formCard}>
       <h1 className={styles.title}>REGISTRATION</h1>
-
       <form action={formAction} className={styles.inputGroup} noValidate>
         <InputForm
           label="FIRST NAME"
           name="firstName"
           placeholder="First name"
-          isError={succes}
+          isError={isError}
         />
-
         <InputForm
           label="LAST NAME"
           name="lastName"
           placeholder="Last name"
-          isError={succes}
+          isError={isError}
         />
-
         <InputForm
           label="EMAIL"
           name="email"
           placeholder="email@email.com"
           type="email"
-          isError={succes}
+          isError={isError}
         />
-
         <InputForm
           label="PASSWORD"
           name="password"
           placeholder="password"
           type="password"
-          isError={succes}
+          isError={isError}
         />
-
         <ButtonForm
           buttonName={isLoading ? 'SENDING...' : 'SIGN UP'}
           disabled={isLoading}
