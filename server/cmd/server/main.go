@@ -31,9 +31,14 @@ func main() {
 
 	api := r.Group("/api")
 	{
+		auth := api.Group("/auth")
+		{
+			auth.POST("/register", userCtrl.CreateUser)
+			auth.POST("/login", userCtrl.Login)
+		}
+
 		users := api.Group("/users")
 		{
-			users.POST("", userCtrl.CreateUser)
 			users.GET("", userCtrl.GetUsers)
 			users.GET("/:id", userCtrl.GetUser)
 			users.PUT("/:id", userCtrl.UpdateUser)
