@@ -1,51 +1,51 @@
 import styles from './RegistrationForm.module.css'
 import InputForm from '../InputForm/InputForm'
 import ButtonForm from '../ButtonForm/ButtonForm'
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useReg } from '../../hooks/useReg'
 
 export default function RegistrationForm() {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const { succes, formAction, isLoading } = useReg()
 
   return (
     <div className={styles.formCard}>
       <h1 className={styles.title}>REGISTRATION</h1>
 
-      <form className={styles.inputGroup}>
+      <form action={formAction} className={styles.inputGroup} noValidate>
         <InputForm
           label="FIRST NAME"
+          name="firstName"
           placeholder="First name"
-          value={firstName}
-          onChange={setFirstName}
+          isError={succes}
         />
 
         <InputForm
           label="LAST NAME"
+          name="lastName"
           placeholder="Last name"
-          value={lastName}
-          onChange={setLastName}
+          isError={succes}
         />
 
         <InputForm
           label="EMAIL"
+          name="email"
           placeholder="email@email.com"
           type="email"
-          value={email}
-          onChange={setEmail}
+          isError={succes}
         />
 
         <InputForm
           label="PASSWORD"
+          name="password"
           placeholder="password"
           type="password"
-          value={password}
-          onChange={setPassword}
+          isError={succes}
         />
 
-        <ButtonForm buttonName="SIGN UP" />
+        <ButtonForm
+          buttonName={isLoading ? 'SENDING...' : 'SIGN UP'}
+          disabled={isLoading}
+        />
       </form>
 
       <div className={styles.footer}>

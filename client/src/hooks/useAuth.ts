@@ -4,7 +4,6 @@ import { loginRequest } from '../api/authService'
 import { validateEmail } from '../utils/validation'
 
 interface FormState {
-  error: string | null
   success: boolean
 }
 
@@ -19,24 +18,22 @@ export const useAuth = () => {
     const password = formData.get('password') as string
 
     if (!validateEmail(email)) {
-      return { error: 'Invalid email', success: false }
+      return { success: false }
     }
 
     try {
       const response = await loginRequest(email, password)
       localStorage.setItem('accessToken', response.token) //настройка токена
       navigate('/home')
-      return { error: null, success: true }
-    } catch (err: any) {
+      return { success: true }
+    } catch (error: any) {
       return {
-        error: 'Invalid password',
         success: false
       }
     }
   }
 
   const [state, formAction, isPending] = useActionState(loginAction, {
-    error: null,
     success: false
   })
 
