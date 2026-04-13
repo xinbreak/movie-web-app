@@ -22,8 +22,7 @@ export const useAuth = () => {
     }
 
     try {
-      const response = await loginRequest(email, password)
-      localStorage.setItem('accessToken', response.token)
+      await loginRequest(email, password)
       navigate('/home')
       return { isError: false }
     } catch {
