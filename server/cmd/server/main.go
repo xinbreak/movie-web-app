@@ -1,43 +1,45 @@
-package database
+package main
 
 import (
-	"crypto/tls"
-	"fmt"
-	"log"
-	"os"
-
-	"github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
-	gormMysql "gorm.io/driver/mysql"
-	"gorm.io/gorm"
+	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/xinbreak/movie-web-app/database"
+	_ "github.com/xinbreak/movie-web-app/docs"
+	"github.com/xinbreak/movie-web-app/internal/controllers"
+	"github.com/xinbreak/movie-web-app/internal/models"
+	"github.com/xinbreak/movie-web-app/internal/repository"
+	"github.com/xinbreak/movie-web-app/internal/service"
 )
 
-var DB *gorm.DB
+// @title movie-web-app API
+// @version 1.0
+// @description API Server for Movie Application
+// @host localhost:8080
+// @BasePath /api
+func main() {
+	database.InitDB()
+	database.DB.AutoMigrate(&models.User{})
 
-func InitDB() {
-	if err := godotenv.Load(); err != nil {
-		log.Println("Attentionq: .env file not found")
+	userRepo := repository.NewUserRepository(database.DB)
+	userSvc := service.NewUserService(userRepo)
+	userCtrl := controllers.NewUserController(userSvc)
+
+	r := gin.Default()
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	api := r.Group("/api")
+	{
+		users := api.Group("/users")
+		{
+			users.POST("", userCtrl.CreateUser)
+			users.GET("", userCtrl.GetUsers)
+			users.GET("/:id", userCtrl.GetUser)
+			users.PUT("/:id", userCtrl.UpdateUser)
+			users.DELETE("/:id", userCtrl.DeleteUser)
+		}
 	}
 
-	dbUser := os.Getenv("DB_USER")
-	dbPass := os.Getenv("DB_PASSWORD")
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
-	dbName := os.Getenv("DB_NAME")
-
-	err := mysql.RegisterTLSConfig("tidb", &tls.Config{
-		MinVersion: tls.VersionTLS12,
-		ServerName: dbHost,
-	})
-	if err != nil {
-		log.Fatal("Failed to register TLS:", err)
-	}
-
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?tls=tidb&charset=utf8mb4&parseTime=True&loc=Local",
-		dbUser, dbPass, dbHost, dbPort, dbName)
-
-	DB, err = gorm.Open(gormMysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		log.Fatal("Failed to connect to database:", err)
-	}
+	r.Run(":8080")
 }

@@ -25,3 +25,11 @@ func (s *UserService) GetUser(id uuid.UUID) (*models.User, error) {
 func (s *UserService) ListUsers() ([]models.User, error) {
 	return s.repo.GetAll()
 }
+
+func (s *UserService) UpdateUser(user *models.User) error {
+	return s.repo.Update(user)
+}
+
+func (s *UserService) DeleteUser(id uuid.UUID) error {
+	return s.repo.Delete(id)
+}
