@@ -23,4 +23,4 @@ services:
     tty: true
     stdin_open: true
     working_dir: /app/server
-    command: sh -c "go mod download && go run main.go"
+    command: sh -c "go mod tidy && go run cmd/server/main.go"
