@@ -1,20 +1,20 @@
 services:
   front:
     build:
-      context: .
+      context: ./client
       dockerfile: Dockerfile.dev
     volumes:
-      - .:/app  # Магия: синхронизирует текущую папку с /app в контейнере
+      - .:/app 
     ports:
       - "5173:5173"
-    tty: true   # Чтобы контейнер не закрылся сразу
+    tty: true
     stdin_open: true
     working_dir: /app/client
-    command: sh -c "npm install && npm run dev -- --host"
+    command: sh -c "npm run dev -- --host"
 
   back:
     build:
-     context: .
+     context: ./server
      dockerfile: Dockerfile.dev
     volumes:
      - .:/app
