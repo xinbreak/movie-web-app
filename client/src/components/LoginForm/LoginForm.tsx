@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
-import ButtonForm from '../ButtonForm/ButtonForm'
-import InputForm from '../InputForm/InputForm'
 import { useAuth } from '../../hooks/useAuth'
+import ButtonForm from '../UI/ButtonForm/ButtonForm'
+import InputForm from '../UI/InputForm/InputForm'
 import styles from './LoginForm.module.css'
 
 export default function LoginForm() {

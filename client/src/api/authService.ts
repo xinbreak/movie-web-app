@@ -1,5 +1,7 @@
+const API_URL = import.meta.env.VITE_API_URL
+
 export const loginRequest = async (email: string, password: string) => {
-  const response = await fetch('http://localhost:8080/api/auth/login', {
+  const response = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -7,33 +9,37 @@ export const loginRequest = async (email: string, password: string) => {
     body: JSON.stringify({ email, password })
   })
 
+  const data = await response.json().catch(() => ({}))
+
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}))
-    throw new Error(errorData.message || 'Login failed')
+    throw new Error(data.message || 'Login failed')
   }
 
-  return await response.json()
+  return data
 }
 
 export const registerRequest = async (userData: Record<string, any>) => {
-  const user = {
-    email: userData.email,
-    password: userData.password,
-    username: userData.firstName + ' ' + userData.lastName
-  }
-
-  const response = await fetch('http://localhost:8080/api/auth/register', {
+  const response = await fetch(`${API_URL}/auth/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(user)
+    body: JSON.stringify(userData)
   })
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}))
     throw new Error(errorData.message || 'Registration failed')
   }
+}
 
-  return await response.json()
+export const getUsers = async () => {
+  const response = await fetch(`${API_URL}/users`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  console.log(response.json())
 }
