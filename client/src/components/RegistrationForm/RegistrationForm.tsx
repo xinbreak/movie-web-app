@@ -1,6 +1,6 @@
 import styles from './RegistrationForm.module.css'
-import InputForm from '../InputForm/InputForm'
-import ButtonForm from '../ButtonForm/ButtonForm'
+import InputForm from '../UI/InputForm/InputForm'
+import ButtonForm from '../UI/ButtonForm/ButtonForm'
 import { Link } from 'react-router-dom'
 import { useReg } from '../../hooks/useReg'
 
@@ -12,15 +12,16 @@ export default function RegistrationForm() {
       <h1 className={styles.title}>REGISTRATION</h1>
       <form action={formAction} className={styles.inputGroup} noValidate>
         <InputForm
-          label="FIRST NAME"
-          name="firstName"
-          placeholder="First name"
+          label="USERNAME"
+          name="username"
+          placeholder="username"
           isError={isError}
         />
         <InputForm
-          label="LAST NAME"
-          name="lastName"
-          placeholder="Last name"
+          label="PASSWORD"
+          name="password"
+          placeholder="password"
+          type="password"
           isError={isError}
         />
         <InputForm
@@ -31,8 +32,8 @@ export default function RegistrationForm() {
           isError={isError}
         />
         <InputForm
-          label="PASSWORD"
-          name="password"
+          label="REPEAT PASSWORD"
+          name="passwordRepeat"
           placeholder="password"
           type="password"
           isError={isError}

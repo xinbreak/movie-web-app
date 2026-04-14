@@ -16,10 +16,12 @@ export const useReg = () => {
   ): Promise<FormState> => {
     const data = Object.fromEntries(formData.entries())
 
-    const emailValid = validateEmail(data.email as string)
-    const passValid = validatePassword(data.password as string)
+    const email = validateEmail(data.email as string)
+    const password =
+      validatePassword(data.password as string) &&
+      data.password === data.passwordRepeat
 
-    if (!emailValid || !passValid || !data.firstName || !data.lastName) {
+    if (!email || !password || !data.username) {
       return { isError: true }
     }
 
