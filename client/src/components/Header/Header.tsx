@@ -5,7 +5,7 @@ import { UserAction } from '../UI/UserAction/UserAction'
 
 export default function Header() {
   return (
-    <header className={styles.header}>
+    <header>
       <div className={styles.navBar}>
         <img src={logo} alt="Logo" />
         <Navigation />

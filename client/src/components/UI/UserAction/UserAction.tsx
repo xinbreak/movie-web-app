@@ -11,8 +11,12 @@ export const UserAction = () => {
     <>
       <div className={styles.rightSection}>
         <div className={styles.desktopIcons}>
-          <img src={notification} alt="not" width="24" />
-          <img src={userProfile} alt="user" width="24" />
+          <Link to="/notifications" onClick={() => setIsOpen(false)}>
+            <img src={notification} alt="not" width="24" />
+          </Link>
+          <Link to="/profile" onClick={() => setIsOpen(false)}>
+            <img src={userProfile} alt="user" width="24" />
+          </Link>
         </div>
 
         <div className={styles.mobileInteractiveGroup}>
