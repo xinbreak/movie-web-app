@@ -1,0 +1,13 @@
+.mainNav {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.mainNav a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 14px;
+}
