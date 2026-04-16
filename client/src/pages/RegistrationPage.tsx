@@ -1,16 +1,9 @@
 import RegistrationForm from '../components/RegistrationForm/RegistrationForm'
+import styles from '../styles/RegistrationPage.module.css'
 
 export default function RegistrationPage() {
-  const pageStyle: React.CSSProperties = {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '20px'
-  }
-
   return (
-    <div style={pageStyle}>
+    <div className={styles.pageStyle}>
       <RegistrationForm />
     </div>
   )
