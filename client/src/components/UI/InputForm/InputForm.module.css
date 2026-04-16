@@ -55,8 +55,6 @@
 }
 
 .icon {
-  width: 20px;
-  height: 20px;
   object-fit: contain;
   filter: invert(1) opacity(0.6);
 }

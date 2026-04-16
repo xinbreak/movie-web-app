@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styles from './InputForm.module.css'
-import showIcon from '../../../assets/icons/showPassword.png'
-import hideIcon from '../../../assets/icons/hidePassword.png'
+import showIcon from '../../../assets/icons/ShowPassword.svg'
+import hideIcon from '../../../assets/icons/HidePassword.svg'
 
 interface InputFormProps {
   label: string
@@ -33,7 +33,7 @@ export default function InputForm({
           id={name}
           name={name}
           type={currentType}
-          placeholder={isError ? `Invalid ` + name : placeholder}
+          placeholder={isError ? `Invalid ` + type : placeholder}
           className={`${styles.input} ${isError ? styles.inputError : ''}`}
         />
         {name === 'password' && (

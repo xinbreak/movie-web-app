@@ -21,4 +21,5 @@ body {
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
+  overflow-x: hidden;
 }

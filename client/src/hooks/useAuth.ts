@@ -1,6 +1,7 @@
 import { useActionState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { loginRequest, getUsers } from '../api/authService'
+import { loginRequest } from '../api/authService'
+import type { User } from '../api/authService'
 import { validateEmail } from '../utils/validation'
 
 interface FormState {
@@ -18,13 +19,25 @@ export const useAuth = () => {
     const password = formData.get('password') as string
 
     if (!validateEmail(email)) {
-      const users = await getUsers()
-      console.log('Список пользователей:', users)
       return { isError: true }
     }
 
     try {
-      await loginRequest(email, password)
+      const user = await loginRequest(email, password)
+
+      localStorage.setItem('isAuthorized', 'true')
+      localStorage.setItem('currentUser', JSON.stringify(user))
+
+      const savedUsers: User[] = JSON.parse(
+        localStorage.getItem('saved_users') || '[]'
+      )
+      const exists = savedUsers.find((u) => u.id === user.id)
+
+      if (!exists) {
+        savedUsers.push(user)
+        localStorage.setItem('saved_users', JSON.stringify(savedUsers))
+      }
+
       navigate('/home')
       return { isError: false }
     } catch {

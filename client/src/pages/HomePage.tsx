@@ -1,15 +1,10 @@
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
+import styles from '../styles/HomePage.module.css'
 
 export default function HomePage() {
-  const pageStyle: React.CSSProperties = {
-    minHeight: '100vh',
-    paddingTop: '60px',
-    paddingBottom: '60px'
-  }
-
   return (
-    <div style={pageStyle}>
+    <div className={styles.pageStyle}>
       <Header />
       <Footer />
     </div>

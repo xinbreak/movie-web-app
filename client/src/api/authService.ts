@@ -1,11 +1,19 @@
 const API_URL = import.meta.env.VITE_API_URL
 
-export const loginRequest = async (email: string, password: string) => {
+export interface User {
+  id: string
+  username: string
+  email: string
+  avatar_url: string | null
+}
+
+export const loginRequest = async (
+  email: string,
+  password: string
+): Promise<User> => {
   const response = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password })
   })
 
@@ -15,15 +23,15 @@ export const loginRequest = async (email: string, password: string) => {
     throw new Error(data.message || 'Login failed')
   }
 
-  return data
+  return data as User
 }
 
-export const registerRequest = async (userData: Record<string, any>) => {
+export const registerRequest = async (
+  userData: Record<string, string>
+): Promise<void> => {
   const response = await fetch(`${API_URL}/auth/register`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(userData)
   })
 
@@ -31,15 +39,4 @@ export const registerRequest = async (userData: Record<string, any>) => {
     const errorData = await response.json().catch(() => ({}))
     throw new Error(errorData.message || 'Registration failed')
   }
-}
-
-export const getUsers = async () => {
-  const response = await fetch(`${API_URL}/users`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-
-  console.log(response.json())
 }

@@ -1,15 +1,26 @@
 import { Route, Routes, Navigate } from 'react-router-dom'
+import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute'
 import LoginPage from './pages/LoginPage'
 import RegistrationPage from './pages/RegistrationPage'
 import HomePage from './pages/HomePage'
+import ProfilesPage from './pages/ProfilesPage'
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/" element={<Navigate to="/home" />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/registration" element={<RegistrationPage />} />
       <Route path="/home" element={<HomePage />} />
+
+      <Route
+        path="/profiles"
+        element={
+          <ProtectedRoute>
+            <ProfilesPage />
+          </ProtectedRoute>
+        }
+      />
 
       <Route path="*" element={<h1>404</h1>} />
     </Routes>

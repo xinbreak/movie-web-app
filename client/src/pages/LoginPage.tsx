@@ -1,16 +1,9 @@
 import LoginForm from '../components/LoginForm/LoginForm'
+import styles from '../styles/LoginPage.module.css'
 
 export default function LoginPage() {
-  const pageStyle: React.CSSProperties = {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '20px'
-  }
-
   return (
-    <div style={pageStyle}>
+    <div className={styles.pageStyle}>
       <LoginForm />
     </div>
   )

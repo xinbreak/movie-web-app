@@ -1,0 +1,52 @@
+.pageStyle {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+  overflow-y: hidden;
+}
+
+.profilesContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+  align-items: center;
+}
+
+.pageStyle h1 {
+  font-size: 48px;
+  margin: 0;
+}
+
+.closeButtonStyle {
+  position: absolute;
+  top: 10px;
+  right: 35px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0.8;
+  padding: 10px;
+  transition: opacity(0.2);
+  line-height: 1;
+  color: var(--main-text-color);
+}
+
+.profiles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .closeButtonStyle {
+    right: 10px;
+  }
+  .pageStyle h1 {
+    font-size: 34px;
+  }
+}

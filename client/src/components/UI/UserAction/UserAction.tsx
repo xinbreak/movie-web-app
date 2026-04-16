@@ -12,9 +12,9 @@ export const UserAction = () => {
       <div className={styles.rightSection}>
         <div className={styles.desktopIcons}>
           <Link to="/notifications" onClick={() => setIsOpen(false)}>
-            <img src={notification} alt="not" width="24" />
+            <img src={notification} width="24" />
           </Link>
-          <Link to="/profile" onClick={() => setIsOpen(false)}>
+          <Link to="/profiles" onClick={() => setIsOpen(false)}>
             <img src={userProfile} alt="user" width="24" />
           </Link>
         </div>
@@ -22,9 +22,9 @@ export const UserAction = () => {
         <div className={styles.mobileInteractiveGroup}>
           <div className={`${styles.miniMenu} ${isOpen ? styles.active : ''}`}>
             <Link to="/notifications" onClick={() => setIsOpen(false)}>
-              <img src={notification} alt="not" width="24" />
+              <img src={notification} width="24" />
             </Link>
-            <Link to="/profile" onClick={() => setIsOpen(false)}>
+            <Link to="/profiles" onClick={() => setIsOpen(false)}>
               <img src={userProfile} alt="user" width="24" />
             </Link>
           </div>
