@@ -1,4 +1,4 @@
-header {
+.header {
   position: fixed;
   top: 0;
   left: 0;
@@ -18,10 +18,34 @@ header {
   display: flex;
   align-items: center;
   gap: 30px;
+  flex-grow: 0;
+  transition: all 0.3s ease;
+  min-width: 0;
+}
+
+.navBarSearch {
+  flex-grow: 1;
+  margin-right: 30px;
+}
+
+.logo {
+  flex-shrink: 0;
+}
+
+.userActionWrapper {
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
   .header {
     padding: 0 20px;
+  }
+
+  .navBar {
+    gap: 15px;
+  }
+
+  .navBarSearch {
+    margin-right: 10px;
   }
 }
