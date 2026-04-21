@@ -13,12 +13,12 @@ type Comment struct {
 	CreatedAt time.Time  `gorm:"autoCreateTime" json:"created_at"`
 	UserID    uuid.UUID  `gorm:"type:char(36);not null;index" json:"user_id"`
 	ParentID  *uuid.UUID `gorm:"type:char(36);index" json:"parent_id,omitempty"`
-	// VideoID   uuid.UUID `gorm:"type:char(36);not null;index" json:"post_id"`
+	VideoID   uuid.UUID  `gorm:"type:char(36);not null;index" json:"video_id"`
 
 	User    User      `gorm:"foreignKey:UserID" json:"user,omitempty"`
 	Parent  *Comment  `gorm:"foreignKey:ParentID" json:"parent,omitempty"`
 	Replies []Comment `gorm:"foreignKey:ParentID" json:"replies,omitempty"`
-	// Video Video `gorm:"foreignKey:PostID" json:"post,omitempty"`
+	Video   Video     `gorm:"foreignKey:VideoID" json:"video,omitempty"`
 }
 
 func (c *Comment) BeforeCreate(tx *gorm.DB) (err error) {

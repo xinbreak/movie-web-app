@@ -1,6 +1,126 @@
 basePath: /api
 definitions:
-  dto.UserLoginDTO:
+  github_com_xinbreak_movie-web-app_internal_models.Comment:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      parent:
+        $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models.Comment'
+      parent_id:
+        type: string
+      replies:
+        items:
+          $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models.Comment'
+        type: array
+      user:
+        $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models.User'
+      user_id:
+        type: string
+      video:
+        $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models.Video'
+      video_id:
+        type: string
+    type: object
+  github_com_xinbreak_movie-web-app_internal_models.User:
+    properties:
+      avatar_url:
+        type: string
+      comments:
+        items:
+          $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models.Comment'
+        type: array
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+      videos:
+        items:
+          $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models.Video'
+        type: array
+    type: object
+  github_com_xinbreak_movie-web-app_internal_models.Video:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      duration:
+        type: integer
+      id:
+        type: string
+      status:
+        type: string
+      thumbnail_url:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+      views_count:
+        type: integer
+    type: object
+  github_com_xinbreak_movie-web-app_internal_models_dtos.CreateCommentRequest:
+    properties:
+      content:
+        maxLength: 5000
+        minLength: 1
+        type: string
+      parent_id:
+        type: string
+      video_id:
+        type: string
+    required:
+    - content
+    - video_id
+    type: object
+  github_com_xinbreak_movie-web-app_internal_models_dtos.CreateVideoRequest:
+    properties:
+      description:
+        maxLength: 5000
+        type: string
+      duration:
+        minimum: 0
+        type: integer
+      file_path:
+        type: string
+      thumbnail:
+        type: string
+      title:
+        maxLength: 255
+        minLength: 1
+        type: string
+    required:
+    - file_path
+    - title
+    type: object
+  github_com_xinbreak_movie-web-app_internal_models_dtos.UpdateCommentRequest:
+    properties:
+      content:
+        maxLength: 5000
+        minLength: 1
+        type: string
+    required:
+    - content
+    type: object
+  github_com_xinbreak_movie-web-app_internal_models_dtos.UpdateVideoRequest:
+    properties:
+      description:
+        maxLength: 5000
+        type: string
+      title:
+        maxLength: 255
+        minLength: 1
+        type: string
+    required:
+    - title
+    type: object
+  github_com_xinbreak_movie-web-app_internal_models_dtos.UserLoginDTO:
     properties:
       email:
         example: john@example.com
@@ -12,7 +132,7 @@ definitions:
     - email
     - password
     type: object
-  dto.UserRegisterDTO:
+  github_com_xinbreak_movie-web-app_internal_models_dtos.UserRegisterDTO:
     properties:
       email:
         example: john@example.com
@@ -31,7 +151,7 @@ definitions:
     - password
     - username
     type: object
-  dto.UserResponseDTO:
+  github_com_xinbreak_movie-web-app_internal_models_dtos.UserResponseDTO:
     properties:
       avatar_url:
         type: string
@@ -42,7 +162,7 @@ definitions:
       username:
         type: string
     type: object
-  dto.UserUpdateDTO:
+  github_com_xinbreak_movie-web-app_internal_models_dtos.UserUpdateDTO:
     properties:
       avatar_url:
         type: string
@@ -72,14 +192,14 @@ paths:
         name: input
         required: true
         schema:
-          $ref: '#/definitions/dto.UserLoginDTO'
+          $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models_dtos.UserLoginDTO'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.UserResponseDTO'
+            $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models_dtos.UserResponseDTO'
         "401":
           description: Unauthorized
           schema:
@@ -99,14 +219,14 @@ paths:
         name: input
         required: true
         schema:
-          $ref: '#/definitions/dto.UserRegisterDTO'
+          $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models_dtos.UserRegisterDTO'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/dto.UserResponseDTO'
+            $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models_dtos.UserResponseDTO'
         "400":
           description: Bad Request
           schema:
@@ -116,6 +236,217 @@ paths:
       summary: Register a new user
       tags:
       - auth
+  /comments:
+    post:
+      consumes:
+      - application/json
+      description: Create a new comment for a video
+      parameters:
+      - description: Comment creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models_dtos.CreateCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models.Comment'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a new comment
+      tags:
+      - comments
+  /comments/{id}:
+    delete:
+      description: Delete a comment by ID (only author can delete)
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a comment
+      tags:
+      - comments
+    get:
+      description: Get a single comment by its ID with replies
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models.Comment'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get a comment by ID
+      tags:
+      - comments
+    put:
+      consumes:
+      - application/json
+      description: Update an existing comment by ID
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Comment update request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models_dtos.UpdateCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models.Comment'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update a comment
+      tags:
+      - comments
+  /comments/{id}/replies:
+    get:
+      description: Get paginated replies for a specific comment
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: Items per page
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get comment replies
+      tags:
+      - comments
   /users:
     get:
       produces:
@@ -125,7 +456,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dto.UserResponseDTO'
+              $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models_dtos.UserResponseDTO'
             type: array
       summary: List all users
       tags:
@@ -157,7 +488,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.UserResponseDTO'
+            $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models_dtos.UserResponseDTO'
         "404":
           description: Not Found
           schema:
@@ -181,7 +512,7 @@ paths:
         name: input
         required: true
         schema:
-          $ref: '#/definitions/dto.UserUpdateDTO'
+          $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models_dtos.UserUpdateDTO'
       produces:
       - application/json
       responses:
@@ -194,4 +525,279 @@ paths:
       summary: Update user profile
       tags:
       - users
+  /users/{user_id}/videos:
+    get:
+      description: Get paginated list of videos for a specific user
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: Items per page
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get videos by user
+      tags:
+      - videos
+  /videos:
+    get:
+      description: Get paginated list of all videos
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: Items per page
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all videos
+      tags:
+      - videos
+    post:
+      consumes:
+      - application/json
+      description: Upload a new video with title and description
+      parameters:
+      - description: Video creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models_dtos.CreateVideoRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models.Video'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a new video
+      tags:
+      - videos
+  /videos/{id}:
+    delete:
+      description: Delete a video by ID (only owner can delete)
+      parameters:
+      - description: Video ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a video
+      tags:
+      - videos
+    get:
+      description: Get a single video by its ID
+      parameters:
+      - description: Video ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models.Video'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get video by ID
+      tags:
+      - videos
+    put:
+      consumes:
+      - application/json
+      description: Update an existing video (only owner can update)
+      parameters:
+      - description: Video ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Video update request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models_dtos.UpdateVideoRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_xinbreak_movie-web-app_internal_models.Video'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update a video
+      tags:
+      - videos
+  /videos/{video_id}/comments:
+    get:
+      description: Get paginated comments for a specific video
+      parameters:
+      - description: Video ID
+        in: path
+        name: video_id
+        required: true
+        type: string
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: Items per page
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get video comments
+      tags:
+      - comments
 swagger: "2.0"

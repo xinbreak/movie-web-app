@@ -1,18 +1,18 @@
-package service
+package services
 
 import (
 	"errors"
 
 	"github.com/google/uuid"
 	"github.com/xinbreak/movie-web-app/internal/models"
-	"github.com/xinbreak/movie-web-app/internal/repository"
+	"github.com/xinbreak/movie-web-app/internal/repositories"
 )
 
 type UserService struct {
-	repo repository.UserRepository
+	repo repositories.UserRepository
 }
 
-func NewUserService(repo repository.UserRepository) *UserService {
+func NewUserService(repo repositories.UserRepository) *UserService {
 	return &UserService{repo: repo}
 }
 

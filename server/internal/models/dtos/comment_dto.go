@@ -6,7 +6,7 @@ import (
 
 type CreateCommentRequest struct {
 	Content  string     `json:"content" binding:"required,min=1,max=5000"`
-	PostID   uuid.UUID  `json:"post_id" binding:"required"`
+	VideoID  uuid.UUID  `json:"video_id" binding:"required"`
 	ParentID *uuid.UUID `json:"parent_id"`
 }
 

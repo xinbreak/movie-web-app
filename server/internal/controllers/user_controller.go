@@ -6,15 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/xinbreak/movie-web-app/internal/models"
-	"github.com/xinbreak/movie-web-app/internal/models/dto"
-	"github.com/xinbreak/movie-web-app/internal/service"
+	dto "github.com/xinbreak/movie-web-app/internal/models/dtos"
+	"github.com/xinbreak/movie-web-app/internal/services"
 )
 
 type UserController struct {
-	svc *service.UserService
+	svc *services.UserService
 }
 
-func NewUserController(svc *service.UserService) *UserController {
+func NewUserController(svc *services.UserService) *UserController {
 	return &UserController{svc: svc}
 }
 
