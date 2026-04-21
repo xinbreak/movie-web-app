@@ -1,0 +1,22 @@
+.deleteUserButton {
+  min-width: 190px;
+  display: block;
+  width: fit-content;
+  padding: 13px 30px;
+
+  background: none;
+  border: 2px solid #9a3434;
+  border-radius: 15px;
+
+  font-weight: 700;
+  color: #9a3434;
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.deleteUserButton:hover {
+  transform: scale(1.02);
+  transition: 0.3s ease;
+  background: #9a34343f;
+}

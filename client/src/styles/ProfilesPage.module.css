@@ -43,10 +43,17 @@
 }
 
 @media (max-width: 768px) {
+  .pageStyle {
+    gap: 20px;
+  }
   .closeButtonStyle {
     right: 10px;
   }
   .pageStyle h1 {
     font-size: 34px;
+  }
+  .profilesContainer {
+    flex-direction: column;
+    gap: 10px;
   }
 }

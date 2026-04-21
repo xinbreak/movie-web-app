@@ -26,7 +26,7 @@ export const useAuth = () => {
       const user = await loginRequest(email, password)
 
       localStorage.setItem('isAuthorized', 'true')
-      localStorage.setItem('currentUser', JSON.stringify(user))
+      localStorage.setItem('current_user', JSON.stringify(user))
 
       const savedUsers: User[] = JSON.parse(
         localStorage.getItem('saved_users') || '[]'

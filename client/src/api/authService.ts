@@ -5,12 +5,10 @@ export interface User {
   username: string
   email: string
   avatar_url: string | null
+  password?: string
 }
 
-export const loginRequest = async (
-  email: string,
-  password: string
-): Promise<User> => {
+export const loginRequest = async (email: string, password: string) => {
   const response = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -26,9 +24,7 @@ export const loginRequest = async (
   return data as User
 }
 
-export const registerRequest = async (
-  userData: Record<string, string>
-): Promise<void> => {
+export const registerRequest = async (userData: User) => {
   const response = await fetch(`${API_URL}/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

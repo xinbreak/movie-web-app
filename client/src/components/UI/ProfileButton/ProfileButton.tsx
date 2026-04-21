@@ -1,26 +1,30 @@
+import { useNavigate } from 'react-router-dom'
 import styles from './ProfileButton.module.css'
 import defaultUser from '../../../assets/icons/DefaultUser.svg'
-import { Link } from 'react-router-dom'
+import type { User } from '../../../api/authService'
 
 interface ProfileButtonProps {
-  avatar: string | null
-  username: string
+  user: User
 }
 
-export default function ProfileButton({
-  avatar,
-  username
-}: ProfileButtonProps) {
-  const profileImage = !avatar ? defaultUser : avatar
+export default function ProfileButton({ user }: ProfileButtonProps) {
+  const navigate = useNavigate()
+
+  const profileImage = !user.avatar_url ? defaultUser : user.avatar_url
+
+  const handleProfileClick = () => {
+    localStorage.setItem('current_user', JSON.stringify(user))
+    localStorage.setItem('isAuthorized', 'true')
+
+    navigate('/home')
+  }
 
   return (
     <div className={styles.addProfile}>
-      <Link to="/registration">
-        <button>
-          <img src={profileImage} />
-        </button>
-      </Link>
-      <span className={styles.label}>{username}</span>
+      <button className={styles.btn} onClick={handleProfileClick}>
+        <img src={profileImage} alt={user.username} />
+      </button>
+      <span className={styles.label}>{user.username}</span>
     </div>
   )
 }

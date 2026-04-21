@@ -13,14 +13,9 @@ function App() {
       <Route path="/registration" element={<RegistrationPage />} />
       <Route path="/home" element={<HomePage />} />
 
-      <Route
-        path="/profiles"
-        element={
-          <ProtectedRoute>
-            <ProfilesPage />
-          </ProtectedRoute>
-        }
-      />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/profiles" element={<ProfilesPage />} />
+      </Route>
 
       <Route path="*" element={<h1>404</h1>} />
     </Routes>
