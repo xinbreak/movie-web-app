@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage'
 import RegistrationPage from './pages/RegistrationPage'
 import HomePage from './pages/HomePage'
 import ProfilesPage from './pages/ProfilesPage'
+import SearchPage from './pages/SearchPage'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/registration" element={<RegistrationPage />} />
       <Route path="/home" element={<HomePage />} />
+      <Route path="/search" element={<SearchPage />} />
 
       <Route element={<ProtectedRoute />}>
         <Route path="/profiles" element={<ProfilesPage />} />
