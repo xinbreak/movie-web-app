@@ -1,11 +1,11 @@
-package service
+package services
 
 import (
 	"errors"
 	"fmt"
 
 	"github.com/xinbreak/movie-web-app/internal/models"
-	"github.com/xinbreak/movie-web-app/internal/repository"
+	"github.com/xinbreak/movie-web-app/internal/repositories"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -30,11 +30,11 @@ type CommentService interface {
 }
 
 type commentService struct {
-	commentRepo repository.CommentRepository
+	commentRepo repositories.CommentRepository
 	db          *gorm.DB
 }
 
-func NewCommentService(commentRepo repository.CommentRepository, db *gorm.DB) CommentService {
+func NewCommentService(commentRepo repositories.CommentRepository, db *gorm.DB) CommentService {
 	return &commentService{
 		commentRepo: commentRepo,
 		db:          db,
@@ -50,11 +50,11 @@ func (s *commentService) CreateComment(comment *models.Comment) (*models.Comment
 		return nil, ErrCommentTooLong
 	}
 
-	// if comment.ParentID != nil {
-	// 	if err := s.ValidateParentComment(comment.VideoID, *comment.ParentID); err != nil {
-	// 		return nil, err
-	// 	}
-	// }
+	if comment.ParentID != nil {
+		if err := s.ValidateParentComment(comment.VideoID, *comment.ParentID); err != nil {
+			return nil, err
+		}
+	}
 
 	if err := s.commentRepo.Create(comment); err != nil {
 		return nil, fmt.Errorf("failed to create comment: %w", err)
@@ -193,9 +193,9 @@ func (s *commentService) ValidateParentComment(videoID, parentID uuid.UUID) erro
 		return ErrInvalidParentComment
 	}
 
-	// if parent.VideoID != videoID {
-	// 	return ErrInvalidParentComment
-	// }
+	if parent.VideoID != videoID {
+		return ErrInvalidParentComment
+	}
 
 	if parent.ParentID != nil {
 		return errors.New("nested replies are not allowed (max depth: 1)")

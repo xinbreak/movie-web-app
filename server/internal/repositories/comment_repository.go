@@ -1,4 +1,4 @@
-package repository
+package repositories
 
 import (
 	"errors"
@@ -45,6 +45,7 @@ func (r *commentRepository) FindByID(id uuid.UUID) (*models.Comment, error) {
 	var comment models.Comment
 	err := r.db.
 		Preload("User").
+		Preload("Video").
 		Preload("Replies", func(db *gorm.DB) *gorm.DB {
 			return db.Limit(3).Order("created_at DESC")
 		}).
@@ -79,6 +80,7 @@ func (r *commentRepository) FindByVideoID(videoID uuid.UUID, parentID *uuid.UUID
 	offset := (page - 1) * pageSize
 	err := query.
 		Preload("User").
+		Preload("Video").
 		Order("created_at DESC").
 		Offset(offset).
 		Limit(pageSize).
@@ -104,6 +106,7 @@ func (r *commentRepository) FindReplies(commentID uuid.UUID, page, pageSize int)
 	offset := (page - 1) * pageSize
 	err := query.
 		Preload("User").
+		Preload("Video").
 		Order("created_at ASC").
 		Offset(offset).
 		Limit(pageSize).

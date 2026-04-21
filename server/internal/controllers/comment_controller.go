@@ -63,9 +63,9 @@ func (ctrl *CommentController) Create(c *gin.Context) {
 	}
 
 	comment := &models.Comment{
-		Content: req.Content,
-		UserID:  userUUID,
-		//VideoID:  req.PostID,
+		Content:  req.Content,
+		UserID:   userUUID,
+		VideoID:  req.VideoID,
 		ParentID: req.ParentID,
 	}
 

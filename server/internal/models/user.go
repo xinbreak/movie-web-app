@@ -13,6 +13,7 @@ type User struct {
 	Avatar   string    `gorm:"size:512" json:"avatar_url"`
 
 	Comments []Comment `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;" json:"comments,omitempty"`
+	Videos   []Video   `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;" json:"videos,omitempty"`
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {

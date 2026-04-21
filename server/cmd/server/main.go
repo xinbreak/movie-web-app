@@ -20,11 +20,19 @@ import (
 // @BasePath /api
 func main() {
 	database.InitDB()
-	database.DB.AutoMigrate(&models.User{})
+	database.DB.AutoMigrate(&models.User{}, &models.Video{}, &models.Comment{})
 
 	userRepo := repositories.NewUserRepository(database.DB)
 	userSvc := services.NewUserService(userRepo)
 	userCtrl := controllers.NewUserController(userSvc)
+
+	videoRepo := repositories.NewVideoRepository(database.DB)
+	videoSvc := services.NewVideoService(videoRepo)
+	videoCtrl := controllers.NewVideoController(videoSvc)
+
+	commentRepo := repositories.NewCommentRepository(database.DB)
+	commentSvc := services.NewCommentService(commentRepo, database.DB)
+	commentCtrl := controllers.NewCommentController(commentSvc)
 
 	r := gin.Default()
 	r.Use(cors.Default())
@@ -45,6 +53,26 @@ func main() {
 			users.GET("/:id", userCtrl.GetUser)
 			users.PUT("/:id", userCtrl.UpdateUser)
 			users.DELETE("/:id", userCtrl.DeleteUser)
+			users.GET("/:id/videos", videoCtrl.GetByUser)
+		}
+
+		videos := api.Group("/videos")
+		{
+			videos.GET("", videoCtrl.GetAll)
+			videos.GET("/:id", videoCtrl.GetByID)
+			videos.POST("", videoCtrl.Create)
+			videos.PUT("/:id", videoCtrl.Update)
+			videos.DELETE("/:id", videoCtrl.Delete)
+			videos.GET("/:id/comments", commentCtrl.GetVideoComments)
+		}
+
+		comments := api.Group("/comments")
+		{
+			comments.POST("", commentCtrl.Create)
+			comments.GET("/:id", commentCtrl.GetByID)
+			comments.PUT("/:id", commentCtrl.Update)
+			comments.DELETE("/:id", commentCtrl.Delete)
+			comments.GET("/:id/replies", commentCtrl.GetCommentReplies)
 		}
 	}
 
