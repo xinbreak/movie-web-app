@@ -5,18 +5,18 @@ import (
 	"strconv"
 
 	"github.com/xinbreak/movie-web-app/internal/models"
-	"github.com/xinbreak/movie-web-app/internal/models/dto"
-	"github.com/xinbreak/movie-web-app/internal/service"
+	dto "github.com/xinbreak/movie-web-app/internal/models/dtos"
+	"github.com/xinbreak/movie-web-app/internal/services"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
 type CommentController struct {
-	commentService service.CommentService
+	commentService services.CommentService
 }
 
-func NewCommentController(commentService service.CommentService) *CommentController {
+func NewCommentController(commentService services.CommentService) *CommentController {
 	return &CommentController{
 		commentService: commentService,
 	}
@@ -72,15 +72,15 @@ func (ctrl *CommentController) Create(c *gin.Context) {
 	created, err := ctrl.commentService.CreateComment(comment)
 	if err != nil {
 		switch err {
-		case service.ErrCommentEmptyContent:
+		case services.ErrCommentEmptyContent:
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "comment content cannot be empty",
 			})
-		case service.ErrCommentTooLong:
+		case services.ErrCommentTooLong:
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "comment content exceeds maximum length of 5000 characters",
 			})
-		case service.ErrInvalidParentComment:
+		case services.ErrInvalidParentComment:
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "invalid parent comment",
 			})
@@ -152,19 +152,19 @@ func (ctrl *CommentController) Update(c *gin.Context) {
 	updated, err := ctrl.commentService.UpdateComment(commentID, userUUID, req.Content)
 	if err != nil {
 		switch err {
-		case service.ErrCommentNotFound:
+		case services.ErrCommentNotFound:
 			c.JSON(http.StatusNotFound, gin.H{
 				"error": "comment not found",
 			})
-		case service.ErrUnauthorized:
+		case services.ErrUnauthorized:
 			c.JSON(http.StatusForbidden, gin.H{
 				"error": "you don't have permission to update this comment",
 			})
-		case service.ErrCommentEmptyContent:
+		case services.ErrCommentEmptyContent:
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "comment content cannot be empty",
 			})
-		case service.ErrCommentTooLong:
+		case services.ErrCommentTooLong:
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "comment content exceeds maximum length",
 			})
@@ -225,11 +225,11 @@ func (ctrl *CommentController) Delete(c *gin.Context) {
 	err = ctrl.commentService.DeleteComment(commentID, userUUID)
 	if err != nil {
 		switch err {
-		case service.ErrCommentNotFound:
+		case services.ErrCommentNotFound:
 			c.JSON(http.StatusNotFound, gin.H{
 				"error": "comment not found",
 			})
-		case service.ErrUnauthorized:
+		case services.ErrUnauthorized:
 			c.JSON(http.StatusForbidden, gin.H{
 				"error": "you don't have permission to delete this comment",
 			})
@@ -270,7 +270,7 @@ func (ctrl *CommentController) GetByID(c *gin.Context) {
 	comment, err := ctrl.commentService.GetCommentByID(commentID)
 	if err != nil {
 		switch err {
-		case service.ErrCommentNotFound:
+		case services.ErrCommentNotFound:
 			c.JSON(http.StatusNotFound, gin.H{
 				"error": "comment not found",
 			})
@@ -380,7 +380,7 @@ func (ctrl *CommentController) GetCommentReplies(c *gin.Context) {
 	replies, total, err := ctrl.commentService.GetCommentReplies(commentID, page, pageSize)
 	if err != nil {
 		switch err {
-		case service.ErrCommentNotFound:
+		case services.ErrCommentNotFound:
 			c.JSON(http.StatusNotFound, gin.H{
 				"error": "comment not found",
 			})
